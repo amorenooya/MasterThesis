@@ -6,22 +6,16 @@ library(cowplot)
 library(ggrepel)
 
 theme_set(theme_minimal())
-theme_update(plot.title=element_text(color='black', face='bold', size=30),#,
-             #family='Poppins'),
+theme_update(plot.title=element_text(color='black', face='bold', size=30),
              plot.title.position='plot',
              plot.subtitle=element_text(color='black', size=25),
              axis.title=element_text(color='black', size=15),
-             #family='Poppins'),
-             axis.text=element_text(size=10, color='black'),#,
-             #family='Poppins'),
-             plot.caption=element_text(size=20, color='black'),#,
-             #family='Poppins'),
+             axis.text=element_text(size=10, color='black'),
+             plot.caption=element_text(size=20, color='black'),
              legend.position='none',
              legend.justification='right',
-             legend.title=element_text(size=50),#,
-             # family='Poppins'),
+             legend.title=element_text(size=50),
              legend.text=element_text(size=35),
-             #family='Poppins'),
              panel.grid = element_line(color="gray93", size=0.3))
 
 
