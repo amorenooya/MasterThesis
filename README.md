@@ -1,3 +1,4 @@
-# GERMLINE VARIANTS ASSOCIATED WITH PROGNOSIS OF NON MUSCLE INVASIVE BLADDER CANCER
-### Ane Moreno Oya
-R-based code
+# Cox PH models
+This folder contains the code for the analysis using Cox Proportional Hazard models.
+
+In 
