@@ -19,7 +19,7 @@ theme_update(plot.title=element_text(color='black', face='bold', size=30),
              panel.grid = element_line(color="gray93", size=0.3))
 
 
-miami_plot <- function(outcome1, outcome2){
+miami_plot <- function(outcome1, outcome2){ #outcome1, outcome2: recurrence, progression or relapse
  result_1<-read.table(glue('cox_{outcome1}_all.txt'), #output from Cox_PH.R
                       header=TRUE, fill=TRUE)%>% as_tibble() 
  result_2<-read.table(glue('cox_{outcome2}_all.txt'), #output from Cox_PH.R
