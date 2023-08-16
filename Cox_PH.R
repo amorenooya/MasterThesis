@@ -58,8 +58,7 @@ cox_snp_progression <- function(i){
                       age  +
                       gender +
                       TG_progression+
-                      number_recurrence+
-                      tumor_size+
+                      number_recurrences+
                       number_tumor+
                       treatment+
                       area,
