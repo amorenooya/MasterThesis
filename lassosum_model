@@ -1,0 +1,41 @@
+library(lassosum)
+library(dplyr)
+library(parallel)
+
+#lassosum model fitting
+#ss: summary statistics of the SNPs 
+
+ss<-as_tibble(ss)
+ss <- ss %>% tidyr::drop_na(p_value)
+head(ss)
+
+### Specify the PLINK file stub of the reference panel ###
+ref.bfile <- "LASSOSUM_data/1kg_phase1_all"
+
+### Read LD region file ###
+LDblocks <- "EUR.hg19" # This will use LD regions: European population
+
+# calculate pseudocorrelation
+cor <- p2cor(p = ss$p_value, n = 811, sign=ss$coef) 
+
+#calculate weights of SNPs for the PRS
+
+out <- lassosum.pipeline(cor=cor,
+                         snp=ss$rs,
+                         pos=ss$position,
+                         A1=ss$reference_allele,
+                         A2=ss$alternative_allele,
+                         ref.bfile=ref.bfile,
+                         LDblocks = LDblocks,
+                         trace=TRUE,
+                         exclude.ambiguous=FALSE)
+
+
+sumstats<-out$sumstats
+sumstats <- as_tibble(sumstats)
+
+#extract lassosum coefficients
+betalist<-out$beta
+betaout<-as.data.frame(matrix(unlist(betalist),byrow=F,ncol=80))
+colnames(betaout)<-paste(rep(paste0('S',names(betalist)),each=20),1:20,sep='_')
+betaout<-cbind(out$sumstats,betaout)
