@@ -1,0 +1,65 @@
+library(dplyr)
+library(glue)
+library(stringr)
+library(R.utils)
+library(survival)
+library(glmnet)
+library(data.table)
+
+datos <- datos %>% tidyr::drop_na()
+
+#adjust the model, forcing the clinical variables
+
+####### recurrence ######################
+Lasso_Adj_forced <- cv.glmnet(datos %>%  select(-c(id, TR1, indR1)) %>%
+                                data.matrix(), # X matrix
+                              Surv(datos$TR1,datos$indR1), # create survival object from the data
+                              alpha = 1, # lasso: alpha = 1
+                              family = "cox", # specify Cox PH model
+                              maxit = 1000,
+                              nfolds=3,
+                              penalty.factor=c (rep(0, 7), rep (1, ncol(datos) -3 - 7))) #0 forces this variable to be included
+
+
+result <- t(as.matrix(coef(Lasso_Adj_forced, s = "lambda.min"))) %>% as.data.frame() %>%
+  pivot_longer(cols=everything())
+colnames(result)<-c('snp', 'coef')
+
+#selected variables
+result <- result %>% filter(coef!=0) 
+
+####### progression ######################
+Lasso_Adj_forced <- cv.glmnet(datos %>%  select(-c(id, TPFS, indPFS)) %>%
+                                data.matrix(), # X matrix
+                              Surv(datos$PFS,datos$indPFS), # create survival object from the data
+                              alpha = 1, # lasso: alpha = 1
+                              family = "cox", # specify Cox PH model
+                              maxit = 1000,
+                              nfolds=3,
+                              penalty.factor=c (rep(0, 7), rep (1, ncol(datos) -3 - 7))) #0 forces this variable to be included
+
+
+result <- t(as.matrix(coef(Lasso_Adj_forced, s = "lambda.min"))) %>% as.data.frame() %>%
+  pivot_longer(cols=everything())
+colnames(result)<-c('snp', 'coef')
+
+#selected variables
+result <- result %>% filter(coef!=0) 
+
+####### relapse ######################
+Lasso_Adj_forced <- cv.glmnet(datos %>%  select(-c(id, TEFS, indEFS)) %>%
+                                data.matrix(), # X matrix
+                              Surv(datos$EFS,datos$indEFS), # create survival object from the data
+                              alpha = 1, # lasso: alpha = 1
+                              family = "cox", # specify Cox PH model
+                              maxit = 1000,
+                              nfolds=3,
+                              penalty.factor=c (rep(0, 7), rep (1, ncol(datos) -3 - 7))) #0 forces this variable to be included
+
+
+result <- t(as.matrix(coef(Lasso_Adj_forced, s = "lambda.min"))) %>% as.data.frame() %>%
+  pivot_longer(cols=everything())
+colnames(result)<-c('snp', 'coef')
+
+
+
