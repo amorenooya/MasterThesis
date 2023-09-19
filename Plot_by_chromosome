@@ -1,0 +1,71 @@
+library(ggplot2)
+library(dplyr)
+theme_set(theme_minimal())
+theme_update(plot.title=element_text(color='black', face='bold', size=30),
+             plot.title.position='plot',
+             plot.subtitle=element_text(color='black', size=25),
+             axis.title=element_text(color='black', size=19),
+             axis.text=element_text(size=18, color='black'),
+             plot.caption=element_text(size=20, color='black'),
+             legend.position='top',
+             legend.justification='right',
+             legend.title=element_text(size=21),
+             legend.text=element_text(size=20),
+             panel.grid = element_line(color="gray93", size=0.3))
+
+######## BAR PLOTS OF THE SELECTED SNPS BY RSF BY CHROMOSOME #####
+
+##### recurrence #######
+g1<-ggplot(data,
+         aes(x=chromosome, color=chromosome, fill=chromosome,
+             y=percentage, 
+             group = chromosome)) +
+  geom_col(position =position_dodge(), width=0.8, alpha=0.85)+
+    scale_color_manual(values=rep(c('#ffcc00', 
+                                  '#d8ae08'),11),
+                     guide='none')+
+  scale_fill_manual(values=rep(c('#ffcc00', 
+                                 '#d8ae08'),11),
+                    guide='none')+
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major.x= element_blank()) +
+  labs(y='Percentage of SNPs selected',
+    x='Chromosome')
+
+    
+##### progression #######
+g1<-ggplot(data,
+         aes(x=chromosome, color=chromosome, fill=chromosome,
+             y=percentage, 
+             group = chromosome)) +
+  geom_col(position =position_dodge(), width=0.8, alpha=0.85)+
+ scale_color_manual(values=rep(c('#7d3c98', 
+                                  '#693480'),11),
+                     guide='none')+
+  scale_fill_manual(values=rep(c('#7d3c98', 
+                                 '#693480),11),
+                    guide='none')+
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major.x= element_blank()) +
+  labs(y='Percentage of SNPs selected',
+    x='Chromosome')
+
+
+##### relapse #######
+g1<-ggplot(data,
+         aes(x=chromosome, color=chromosome, fill=chromosome,
+             y=percentage, 
+             group = chromosome)) +
+  geom_col(position =position_dodge(), width=0.8, alpha=0.85)+
+  scale_color_manual(values=rep(c('#a4c8a5',
+                                  '#759276'),11),
+                     guide='none')+
+  scale_fill_manual(values=rep(c('#a4c8a5',
+                                 '#759276'),11),
+                    guide='none')+
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major.x= element_blank()) +
+  labs(y='Percentage of SNPs selected',
+    x='Chromosome')
+
+  
