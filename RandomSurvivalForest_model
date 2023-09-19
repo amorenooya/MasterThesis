@@ -1,0 +1,86 @@
+library(dplyr)
+library(glue)
+library(stringr)
+library(parallel)
+library(survival)
+library(data.table)
+library(ranger)
+
+#adjust the Random Survival forest model
+set.seed(1611)
+
+############ recurrence ##################
+obj <- ranger(dependent.variable.name = 'TR1',
+              status.variable.name = 'indR1',
+              data=datos,
+              num.trees=500, #ajustar
+              min.node.size=3, #ajustar
+              splitrule='C',
+              importance='impurity_corrected',
+              oob.error=FALSE,
+              seed=1611)
+
+print.ranger(obj)
+
+importance <-  importance_pvalues(obj, method = "janitza")
+importance <- as.data.frame(importance)
+importance$SNP <- rownames(importance)
+importance <- as_tibble(importance)
+
+########### progression ####################
+obj <- ranger(dependent.variable.name = 'TPFS',
+              status.variable.name = 'indPFS',
+              data=datos,
+              num.trees=500, #ajustar
+              min.node.size=3, #ajustar
+              splitrule='C',
+              importance='impurity_corrected',
+              oob.error=FALSE,
+              seed=1611)
+
+print.ranger(obj)
+
+#variable importance
+importance <-  importance_pvalues(obj, method = "janitza")
+importance <- as.data.frame(importance)
+importance$SNP <- rownames(importance)
+importance <- as_tibble(importance)
+
+########### progression ####################
+obj <- ranger(dependent.variable.name = 'TPFS',
+              status.variable.name = 'indPFS',
+              data=datos,
+              num.trees=500, #ajustar
+              min.node.size=3, #ajustar
+              splitrule='C',
+              importance='impurity_corrected',
+              oob.error=FALSE,
+              seed=1611)
+
+print.ranger(obj)
+
+#variable importance
+importance <-  importance_pvalues(obj, method = "janitza")
+importance <- as.data.frame(importance)
+importance$SNP <- rownames(importance)
+importance <- as_tibble(importance)
+
+########### relapse ####################
+obj <- ranger(dependent.variable.name = 'TEFS',
+              status.variable.name = 'indEFS',
+              data=datos,
+              num.trees=500, #ajustar
+              min.node.size=3, #ajustar
+              splitrule='C',
+              importance='impurity_corrected',
+              oob.error=FALSE,
+              seed=1611)
+
+print.ranger(obj)
+
+
+#variable importance
+importance <-  importance_pvalues(obj, method = "janitza")
+importance <- as.data.frame(importance)
+importance$SNP <- rownames(importance)
+importance <- as_tibble(importance)
